@@ -1,0 +1,14 @@
+/home/atticusk/coding/cudt/cudt.cabal:
+  hash: e4ca4f3bc1f8cc356c12262403c1d672882b24893aff9528ac7062c295514270
+/home/atticusk/coding/cudt/.stack-work/dist/x86_64-linux-nix/Cabal-3.2.1.0/build/autogen/cabal_macros.h:
+  hash: a2f2dfc3fa9e8735276f5d2677cc3ed6495d963fb42ba6b10059355ba84b06fc
+/home/atticusk/coding/cudt/src/Main.hs:
+  hash: 0fab36b2eba455f264819b573207e34c748fa2c052011789cfce950729177f79
+/home/atticusk/coding/cudt/.stack-work/dist/x86_64-linux-nix/Cabal-3.2.1.0/build/autogen/Paths_cudt.hs:
+  hash: 5da1344a2d0d8edcd91ab2ef554cd207c7c4d9f6ded79d6476651f21a8132379
+/nix/store/vv9d9wp6s61jiwfn9hd3bvciracfjr71-ghc-8.10.7/lib/ghc-8.10.7/include/ghcversion.h:
+  hash: c013160c9aa8a98f4638616496dce720c23ceca8ef9d6b3212b654642fbda5e4
+/nix/store/bd9k3zwm0b3p8k3qw0nlk71vzfa5hn8n-glibc-2.34-115-dev/include/stdc-predef.h:
+  hash: 38bac01c137da3ec6623c5166d420cd0bdee18e1d6605921f138f74ef902f102
+/home/atticusk/coding/cudt/package.yaml:
+  hash: dbcab56b97c1dab3e31a288b2ebfbb71f67e6591901473d814be18314dad97c1

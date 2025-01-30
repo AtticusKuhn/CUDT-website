@@ -1,0 +1,37 @@
+name:                cudt
+version:             1.0.0.0
+author:              Atticus Kuhn
+maintainer:          atticusmkuhn@gmail.com
+copyright:           "MIT"
+
+dependencies:
+  - base
+  - blaze-html
+  - warp
+  - servant-blaze
+  - servant-server
+
+library:
+  source-dirs: src
+
+executables:
+  cudt-exe:
+    main:                Main.hs
+    source-dirs:         src
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - cudt
+
+tests:
+  trinder-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - cudt
