@@ -31,6 +31,7 @@ pkgs.mkShell {
     unstable.aider-chat
     pkgs.ormolu
     pkgs.zlib
+    unstable.tailwindcss
   ];
 
   # Configure the Nix path to our own `pkgs`, to ensure Stack-with-Nix uses the correct one rather than the global <nixpkgs> when looking for the right `ghc` argument to pass in `nix/stack-integration.nix`
