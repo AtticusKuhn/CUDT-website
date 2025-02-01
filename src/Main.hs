@@ -7,7 +7,7 @@ module Main where
 import Network.Wai.Handler.Warp (run)
 import Servant
 import Servant.HTML.Blaze
-import Servant.StaticFiles (serveDirectoryWebApp)
+import Servant.Server.StaticFiles (serveDirectoryWebApp)
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
 import Text.Blaze.Html5.Attributes as A
@@ -84,7 +84,6 @@ server =
     :<|> return eventsPage
     :<|> return joinPage
     :<|> serveDirectoryWebApp "static"
-
 
 -- Application
 app :: Application
