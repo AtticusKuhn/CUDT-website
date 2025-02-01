@@ -18,6 +18,7 @@ type API =
     :<|> "about" :> Get '[HTML] Html
     :<|> "events" :> Get '[HTML] Html
     :<|> "join" :> Get '[HTML] Html
+    :<|> "sponsors" :> Get '[HTML] Html
     :<|> "static" :> Raw
 
 -- Common page template
