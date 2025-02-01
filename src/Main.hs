@@ -1,11 +1,10 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE DataKinds, NamedFieldPuns, OverloadedStrings, StandaloneKindSignatures, TypeApplications, TypeOperators #-}
 
 module Main where
 
 import Network.Wai.Handler.Warp (run)
 import Servant
+import Servant.API.ContentTypes (NoContent (..))
 import Servant.HTML.Blaze
 import Servant.Server.StaticFiles (serveDirectoryWebApp)
 import Text.Blaze.Html
@@ -20,17 +19,18 @@ type API =
     :<|> "join" :> Get '[HTML] Html
     :<|> "sponsors" :> Get '[HTML] Html
     :<|> "static" :> Raw
+    :<|> Get '[HTML] Html
 
 -- Common page template
-pageTemplate :: String -> Html -> Html
-pageTemplate title content = H.docTypeHtml $ do
+type PageTemplate :: String -> Html -> Html
+pageTemplate title content = H.docTypeHtml $
   H.head $ do
     H.meta ! A.charset "UTF-8"
     H.title $ H.toHtml title
     H.link ! A.rel "stylesheet" ! A.href "/static/styles.css"
     H.link ! A.rel "icon" ! A.type_ "image/png" ! A.href "/static/defense_tech_logo.png"
-  H.body ! A.class_ "bg-gray-50" $ do
-    H.nav ! A.class_ "bg-blue-500 p-4" $ do
+  H.body ! A.class_ "bg-gray-50" $
+    H.nav ! A.class_ "bg-blue-500 p-4" $
       H.div ! A.class_ "container mx-auto flex justify-between items-center" $ do
         H.a ! A.href "/" ! A.class_ "text-white font-semibold text-xl" $ "CUDTS"
         H.div $ do
@@ -41,26 +41,19 @@ pageTemplate title content = H.docTypeHtml $ do
           H.a ! A.href "/sponsors" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Sponsors"
     H.div ! A.class_ "container mx-auto p-8" $ content
 
--- Home page
-homePage :: Html
+type HomePage :: Html
 homePage = pageTemplate "Home" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Cambridge University Defence Tech Society"
-  H.p ! A.class_ "text-gray-700 mb-4" $
-    "Welcome to the official website of the Cambridge University Defence Tech Society."
-  H.p ! A.class_ "text-gray-700" $
-    "Explore our website to learn more about our mission, upcoming events, and how to join."
+  H.p ! A.class_ "text-gray-700 mb-4" $ "Welcome to the official website of the Cambridge University Defence Tech Society."
+  H.p ! A.class_ "text-gray-700" $ "Explore our website to learn more about our mission, upcoming events, and how to join."
 
--- About page
-aboutPage :: Html
+type AboutPage :: Html
 aboutPage = pageTemplate "About Us" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "About Us"
-  H.p ! A.class_ "text-gray-700 mb-4" $
-    "The Cambridge University Defence Tech Society brings together students from various disciplines to discuss, research, and innovate in the field of defence technology."
-  H.p ! A.class_ "text-gray-700" $
-    "Our members come from engineering, computer science, physics, and other STEM backgrounds, united by our interest in defence technology and its applications."
+  H.p ! A.class_ "text-gray-700 mb-4" $ "The Cambridge University Defence Tech Society brings together students from various disciplines to discuss, research, and innovate in the field of defence technology."
+  H.p ! A.class_ "text-gray-700" $ "Our members come from engineering, computer science, physics, and other STEM backgrounds, united by our interest in defence technology and its applications."
 
--- Events page
-eventsPage :: Html
+type EventsPage :: Html
 eventsPage = pageTemplate "Events Calendar" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Events Calendar"
   H.p ! A.class_ "text-gray-700 mb-4" $ "Upcoming events:"
@@ -69,48 +62,55 @@ eventsPage = pageTemplate "Events Calendar" $ do
     H.li ! A.class_ "text-gray-700 mb-2" $ "March 1: Workshop on Cybersecurity"
     H.li ! A.class_ "text-gray-700" $ "March 15: Field Trip to Defence Research Facility"
 
--- Join page
--- Join page
-joinPage :: Html
+type JoinPage :: Html
 joinPage = pageTemplate "Join Us" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Join Our Society"
-  H.p ! A.class_ "text-gray-700 mb-4" $
-    "We welcome students from all backgrounds who are interested in defence technology."
-  H.p ! A.class_ "text-gray-700 mb-4" $
-    "To join, please fill out our membership form:"
+  H.p ! A.class_ "text-gray-700 mb-4" $ "We welcome students from all backgrounds who are interested in defence technology."
+  H.p ! A.class_ "text-gray-700 mb-4" $ "To join, please fill out our membership form:"
   H.a ! A.href "#" ! A.class_ "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" $ "Join Now"
 
--- Sponsors page
-sponsorsPage :: Html
+type SponsorsPage :: Html
 sponsorsPage = pageTemplate "Sponsors" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Our Sponsors"
-  H.p ! A.class_ "text-gray-700 mb-4" $
-    "We are grateful for the support of our sponsors, who help make our events and activities possible."
+  H.p ! A.class_ "text-gray-700 mb-4" $ "We are grateful for the support of our sponsors, who help make our events and activities possible."
   H.h2 ! A.class_ "text-2xl font-bold text-gray-800 mb-2" $ "Current Sponsors"
   H.ul ! A.class_ "list-disc pl-5" $ do
     H.li ! A.class_ "text-gray-700 mb-2" $ "Sponsor 1"
     H.li ! A.class_ "text-gray-700 mb-2" $ "Sponsor 2"
     H.li ! A.class_ "text-gray-700" $ "Sponsor 3"
   H.h2 ! A.class_ "text-2xl font-bold text-gray-800 mt-8 mb-2" $ "Become a Sponsor"
-  H.p ! A.class_ "text-gray-700 mb-4" $
-    "If your company is interested in supporting the Cambridge University Defence Tech Society, please contact us at "
+  H.p ! A.class_ "text-gray-700 mb-4" $ "If your company is interested in supporting the Cambridge University Defence Tech Society, please contact us at "
   H.a ! A.href "mailto:sponsorship@cudts.org" ! A.class_ "text-blue-500 hover:underline" $ "sponsorship@cudts.org"
-  H.p ! A.class_ "text-gray-700" $
-    "We offer various sponsorship packages that provide visibility and engagement opportunities with our members."
+  H.p ! A.class_ "text-gray-700" $ "We offer various sponsorship packages that provide visibility and engagement opportunities with our members."
+
+type HtmlPage :: Type
+type HtmlPage = Html
+
+type ServerHtml :: Type
+type ServerHtml = ServerT API Handler
+
+htmlServer :: ServerHtml
+htmlServer =
+  pure homePage
+    :<|> pure aboutPage
+    :<|> pure eventsPage
+    :<|> pure joinPage
+    :<|> pure sponsorsPage
+    :<|> serveDirectoryWebApp "static"
+    :<|> pure homePage
 
 -- Server implementation
-server :: Server API
-server =
-  return homePage
-    :<|> return aboutPage
-    :<|> return eventsPage
-    :<|> return joinPage
-    :<|> return sponsorsPage
-    :<|> serveDirectoryWebApp "static"
+type ServerAPI :: Type
+type ServerAPI = ServerT API Handler
 
--- Application
-app :: Application
-app = serve (Proxy :: Proxy API) server
+server :: ServerAPI
+server = hoistServer (Proxy @API) (pure . runIdentity) htmlServer
+
+type App :: Type
+type App = Application
+
+app :: App
+app = serve (Proxy @API) server
 
 -- Main function
 main :: IO ()
