@@ -7,9 +7,10 @@ module Main where
 import Network.Wai.Handler.Warp (run)
 import Servant
 import Servant.HTML.Blaze
+import Servant.StaticFiles (serveDirectoryWebApp)
 import Text.Blaze.Html
 import qualified Text.Blaze.Html5 as H
-import Text.Blaze.Html5.Attributes
+import Text.Blaze.Html5.Attributes as A
 
 -- Define our API type
 type API =
@@ -17,80 +18,80 @@ type API =
     :<|> "about" :> Get '[HTML] Html
     :<|> "events" :> Get '[HTML] Html
     :<|> "join" :> Get '[HTML] Html
+    :<|> "static" :> Raw
 
 -- Common page template
 pageTemplate :: String -> Html -> Html
 pageTemplate title content = H.docTypeHtml $ do
   H.head $ do
-    H.meta ! charset "UTF-8"
+    H.meta ! A.charset "UTF-8"
     H.title $ H.toHtml title
-    H.link ! rel "stylesheet" ! href "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-  H.body ! class_ "bg-gray-100" $ do
-    H.nav ! class_ "bg-white shadow mb-8" $ do
-      H.div ! class_ "max-w-4xl mx-auto px-8 py-4" $ do
-        H.a ! href "/" ! class_ "text-lg font-semibold text-gray-800 hover:text-gray-600" $ "Home"
-        H.a ! href "/about" ! class_ "ml-6 text-lg font-semibold text-gray-800 hover:text-gray-600" $ "About"
-        H.a ! href "/events" ! class_ "ml-6 text-lg font-semibold text-gray-800 hover:text-gray-600" $ "Events"
-        H.a ! href "/join" ! class_ "ml-6 text-lg font-semibold text-gray-800 hover:text-gray-600" $ "Join Us"
-    H.div ! class_ "max-w-4xl mx-auto p-8" $ content
+    H.link ! A.rel "stylesheet" ! A.href "/static/styles.css"
+  H.body ! A.class_ "bg-gray-50" $ do
+    H.nav ! A.class_ "bg-blue-500 p-4" $ do
+      H.div ! A.class_ "container mx-auto flex justify-between items-center" $ do
+        H.a ! A.href "/" ! A.class_ "text-white font-semibold text-xl" $ "CUDTS"
+        H.div $ do
+          H.a ! A.href "/" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Home"
+          H.a ! A.href "/about" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "About"
+          H.a ! A.href "/events" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Events"
+          H.a ! A.href "/join" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Join Us"
+    H.div ! A.class_ "container mx-auto p-8" $ content
 
 -- Home page
 homePage :: Html
 homePage = pageTemplate "Home" $ do
-  H.h1 ! class_ "text-4xl font-bold mb-8" $ "Cambridge University Defense Tech Society"
-  H.p ! class_ "text-lg mb-4" $
-    "Welcome to the official website of the Cambridge University Defense Tech Society."
-  H.p ! class_ "text-lg mb-4" $
+  H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Cambridge University Defence Tech Society"
+  H.p ! A.class_ "text-gray-700 mb-4" $
+    "Welcome to the official website of the Cambridge University Defence Tech Society."
+  H.p ! A.class_ "text-gray-700" $
     "Explore our website to learn more about our mission, upcoming events, and how to join."
 
 -- About page
 aboutPage :: Html
 aboutPage = pageTemplate "About Us" $ do
-  H.h1 ! class_ "text-4xl font-bold mb-8" $ "About Us"
-  H.p ! class_ "text-lg mb-4" $
-    "The Cambridge University Defense Tech Society brings together students from various disciplines to discuss, research, and innovate in the field of defense technology."
-  H.p ! class_ "text-lg mb-4" $
-    "Our members come from engineering, computer science, physics, and other STEM backgrounds, united by our interest in defense technology and its applications."
+  H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "About Us"
+  H.p ! A.class_ "text-gray-700 mb-4" $
+    "The Cambridge University Defence Tech Society brings together students from various disciplines to discuss, research, and innovate in the field of defence technology."
+  H.p ! A.class_ "text-gray-700" $
+    "Our members come from engineering, computer science, physics, and other STEM backgrounds, united by our interest in defence technology and its applications."
 
 -- Events page
 eventsPage :: Html
 eventsPage = pageTemplate "Events Calendar" $ do
-  H.h1 ! class_ "text-4xl font-bold mb-8" $ "Events Calendar"
-  H.p ! class_ "text-lg mb-4" $ "Upcoming events:"
-  H.ul ! class_ "list-disc pl-8" $ do
-    H.li ! class_ "mb-2" $ "February 15: Guest Lecture on AI in Defense"
-    H.li ! class_ "mb-2" $ "March 1: Workshop on Cybersecurity"
-    H.li ! class_ "mb-2" $ "March 15: Field Trip to Defense Research Facility"
+  H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Events Calendar"
+  H.p ! A.class_ "text-gray-700 mb-4" $ "Upcoming events:"
+  H.ul ! A.class_ "list-disc pl-5" $ do
+    H.li ! A.class_ "text-gray-700 mb-2" $ "February 15: Guest Lecture on AI in Defence"
+    H.li ! A.class_ "text-gray-700 mb-2" $ "March 1: Workshop on Cybersecurity"
+    H.li ! A.class_ "text-gray-700" $ "March 15: Field Trip to Defence Research Facility"
 
 -- Join page
 joinPage :: Html
 joinPage = pageTemplate "Join Us" $ do
-  H.h1 ! class_ "text-4xl font-bold mb-8" $ "Join Our Society"
-  H.p ! class_ "text-lg mb-4" $
-    "We welcome students from all backgrounds who are interested in defense technology."
-  H.p ! class_ "text-lg mb-4" $
+  H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Join Our Society"
+  H.p ! A.class_ "text-gray-700 mb-4" $
+    "We welcome students from all backgrounds who are interested in defence technology."
+  H.p ! A.class_ "text-gray-700 mb-4" $
     "To join, please fill out our membership form:"
-  H.a ! href "#" ! class_ "bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600" $ "Join Now"
+  H.a ! A.href "#" ! A.class_ "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" $ "Join Now"
 
--- Define our server implementation
+-- Server implementation
 server :: Server API
 server =
   return homePage
     :<|> return aboutPage
     :<|> return eventsPage
     :<|> return joinPage
+    :<|> serveDirectoryWebApp "static"
 
--- Create the API type
+
+-- Application
 app :: Application
 app = serve (Proxy :: Proxy API) server
 
--- Main entry point
+-- Main function
 main :: IO ()
 main = do
-  putStrLn "Starting Cambridge Defense Tech Society web server on port 8080..."
-  putStrLn "Available routes:"
-  putStrLn "  /        - Main page"
-  putStrLn "  /about   - About us"
-  putStrLn "  /events  - Events calendar"
-  putStrLn "  /join    - Join us page"
+  putStrLn "Starting server on port 8080..."
   run 8080 app
