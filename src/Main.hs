@@ -27,6 +27,7 @@ pageTemplate title content = H.docTypeHtml $ do
     H.meta ! A.charset "UTF-8"
     H.title $ H.toHtml title
     H.link ! A.rel "stylesheet" ! A.href "/static/styles.css"
+    H.link ! A.rel "icon" ! A.type_ "image/png" ! A.href "/static/defense_tech_logo.png"
   H.body ! A.class_ "bg-gray-50" $ do
     H.nav ! A.class_ "bg-blue-500 p-4" $ do
       H.div ! A.class_ "container mx-auto flex justify-between items-center" $ do
