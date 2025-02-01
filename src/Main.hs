@@ -38,6 +38,7 @@ pageTemplate title content = H.docTypeHtml $ do
           H.a ! A.href "/about" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "About"
           H.a ! A.href "/events" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Events"
           H.a ! A.href "/join" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Join Us"
+          H.a ! A.href "/sponsors" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Sponsors"
     H.div ! A.class_ "container mx-auto p-8" $ content
 
 -- Home page
@@ -69,6 +70,7 @@ eventsPage = pageTemplate "Events Calendar" $ do
     H.li ! A.class_ "text-gray-700" $ "March 15: Field Trip to Defence Research Facility"
 
 -- Join page
+-- Join page
 joinPage :: Html
 joinPage = pageTemplate "Join Us" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Join Our Society"
@@ -78,6 +80,24 @@ joinPage = pageTemplate "Join Us" $ do
     "To join, please fill out our membership form:"
   H.a ! A.href "#" ! A.class_ "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" $ "Join Now"
 
+-- Sponsors page
+sponsorsPage :: Html
+sponsorsPage = pageTemplate "Sponsors" $ do
+  H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Our Sponsors"
+  H.p ! A.class_ "text-gray-700 mb-4" $
+    "We are grateful for the support of our sponsors, who help make our events and activities possible."
+  H.h2 ! A.class_ "text-2xl font-bold text-gray-800 mb-2" $ "Current Sponsors"
+  H.ul ! A.class_ "list-disc pl-5" $ do
+    H.li ! A.class_ "text-gray-700 mb-2" $ "Sponsor 1"
+    H.li ! A.class_ "text-gray-700 mb-2" $ "Sponsor 2"
+    H.li ! A.class_ "text-gray-700" $ "Sponsor 3"
+  H.h2 ! A.class_ "text-2xl font-bold text-gray-800 mt-8 mb-2" $ "Become a Sponsor"
+  H.p ! A.class_ "text-gray-700 mb-4" $
+    "If your company is interested in supporting the Cambridge University Defence Tech Society, please contact us at "
+  H.a ! A.href "mailto:sponsorship@cudts.org" ! A.class_ "text-blue-500 hover:underline" $ "sponsorship@cudts.org"
+  H.p ! A.class_ "text-gray-700" $
+    "We offer various sponsorship packages that provide visibility and engagement opportunities with our members."
+
 -- Server implementation
 server :: Server API
 server =
@@ -85,6 +105,7 @@ server =
     :<|> return aboutPage
     :<|> return eventsPage
     :<|> return joinPage
+    :<|> return sponsorsPage
     :<|> serveDirectoryWebApp "static"
 
 -- Application
