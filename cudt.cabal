@@ -23,6 +23,7 @@ library
   build-depends:
       base
     , blaze-html
+    , servant
     , servant-blaze
     , servant-server
     , warp
@@ -39,6 +40,7 @@ executable cudt-exe
       base
     , blaze-html
     , cudt
+    , servant
     , servant-blaze
     , servant-server
     , warp
@@ -56,6 +58,7 @@ test-suite trinder-test
       base
     , blaze-html
     , cudt
+    , servant
     , servant-blaze
     , servant-server
     , warp

@@ -1,4 +1,8 @@
-{-# LANGUAGE DataKinds, NamedFieldPuns, OverloadedStrings, StandaloneKindSignatures, TypeApplications, TypeOperators #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StandaloneKindSignatures #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Main where
 
@@ -22,38 +26,43 @@ type API =
     :<|> Get '[HTML] Html
 
 -- Common page template
-type PageTemplate :: String -> Html -> Html
-pageTemplate title content = H.docTypeHtml $
-  H.head $ do
-    H.meta ! A.charset "UTF-8"
-    H.title $ H.toHtml title
-    H.link ! A.rel "stylesheet" ! A.href "/static/styles.css"
-    H.link ! A.rel "icon" ! A.type_ "image/png" ! A.href "/static/defense_tech_logo.png"
-  H.body ! A.class_ "bg-gray-50" $
-    H.nav ! A.class_ "bg-blue-500 p-4" $
-      H.div ! A.class_ "container mx-auto flex justify-between items-center" $ do
-        H.a ! A.href "/" ! A.class_ "text-white font-semibold text-xl" $ "CUDTS"
-        H.div $ do
-          H.a ! A.href "/" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Home"
-          H.a ! A.href "/about" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "About"
-          H.a ! A.href "/events" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Events"
-          H.a ! A.href "/join" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Join Us"
-          H.a ! A.href "/sponsors" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Sponsors"
-    H.div ! A.class_ "container mx-auto p-8" $ content
+pageTemplate :: String -> Html -> Html
+pageTemplate title content =
+  H.docTypeHtml $
+    H.head $
+      do
+        H.meta ! A.charset "UTF-8"
+        H.title $ H.toHtml title
+        H.link ! A.rel "stylesheet" ! A.href "/static/styles.css"
+        H.link ! A.rel "icon" ! A.type_ "image/png" ! A.href "/static/defense_tech_logo.png"
+        H.body ! A.class_ "bg-gray-50" $
+          H.nav ! A.class_ "bg-blue-500 p-4 h-screen" $
+            H.div ! A.class_ "container mx-auto flex justify-between items-center" $
+              do
+                H.div $ do
+                  H.a ! A.href "/" ! A.class_ "text-white font-semibold text-xl" $ "CUDTS"
+                  H.a ! A.href "/" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Home"
+                  H.a ! A.href "/about" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "About"
+                  H.a ! A.href "/events" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Events"
+                  H.a ! A.href "/join" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Join Us"
+                  H.a ! A.href "/sponsors" ! A.class_ "text-white hover:text-gray-200 ml-4" $ "Sponsors"
+                  H.div
+                    ! A.class_ "container mx-auto p-8"
+                    $ content
 
-type HomePage :: Html
+homePage :: Html
 homePage = pageTemplate "Home" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Cambridge University Defence Tech Society"
   H.p ! A.class_ "text-gray-700 mb-4" $ "Welcome to the official website of the Cambridge University Defence Tech Society."
   H.p ! A.class_ "text-gray-700" $ "Explore our website to learn more about our mission, upcoming events, and how to join."
 
-type AboutPage :: Html
+aboutPage :: Html
 aboutPage = pageTemplate "About Us" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "About Us"
   H.p ! A.class_ "text-gray-700 mb-4" $ "The Cambridge University Defence Tech Society brings together students from various disciplines to discuss, research, and innovate in the field of defence technology."
   H.p ! A.class_ "text-gray-700" $ "Our members come from engineering, computer science, physics, and other STEM backgrounds, united by our interest in defence technology and its applications."
 
-type EventsPage :: Html
+eventsPage :: Html
 eventsPage = pageTemplate "Events Calendar" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Events Calendar"
   H.p ! A.class_ "text-gray-700 mb-4" $ "Upcoming events:"
@@ -62,14 +71,14 @@ eventsPage = pageTemplate "Events Calendar" $ do
     H.li ! A.class_ "text-gray-700 mb-2" $ "March 1: Workshop on Cybersecurity"
     H.li ! A.class_ "text-gray-700" $ "March 15: Field Trip to Defence Research Facility"
 
-type JoinPage :: Html
+joinPage :: Html
 joinPage = pageTemplate "Join Us" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Join Our Society"
   H.p ! A.class_ "text-gray-700 mb-4" $ "We welcome students from all backgrounds who are interested in defence technology."
   H.p ! A.class_ "text-gray-700 mb-4" $ "To join, please fill out our membership form:"
   H.a ! A.href "#" ! A.class_ "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" $ "Join Now"
 
-type SponsorsPage :: Html
+sponsorsPage :: Html
 sponsorsPage = pageTemplate "Sponsors" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-gray-800 mb-4" $ "Our Sponsors"
   H.p ! A.class_ "text-gray-700 mb-4" $ "We are grateful for the support of our sponsors, who help make our events and activities possible."
@@ -83,10 +92,10 @@ sponsorsPage = pageTemplate "Sponsors" $ do
   H.a ! A.href "mailto:sponsorship@cudts.org" ! A.class_ "text-blue-500 hover:underline" $ "sponsorship@cudts.org"
   H.p ! A.class_ "text-gray-700" $ "We offer various sponsorship packages that provide visibility and engagement opportunities with our members."
 
-type HtmlPage :: Type
+-- type HtmlPage :: Type
 type HtmlPage = Html
 
-type ServerHtml :: Type
+-- type ServerHtml :: Type
 type ServerHtml = ServerT API Handler
 
 htmlServer :: ServerHtml
@@ -100,13 +109,15 @@ htmlServer =
     :<|> pure homePage
 
 -- Server implementation
-type ServerAPI :: Type
+-- type ServerAPI :: Type
 type ServerAPI = ServerT API Handler
 
 server :: ServerAPI
-server = hoistServer (Proxy @API) (pure . runIdentity) htmlServer
+server = htmlServer
 
-type App :: Type
+-- app = serve (Proxy :: Proxy API) server
+
+-- type App :: Type
 type App = Application
 
 app :: App

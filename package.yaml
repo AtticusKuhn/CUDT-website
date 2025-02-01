@@ -10,6 +10,7 @@ dependencies:
   - warp
   - servant-blaze
   - servant-server
+  - servant
 
 library:
   source-dirs: src
