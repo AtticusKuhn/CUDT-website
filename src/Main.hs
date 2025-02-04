@@ -26,7 +26,7 @@ type API =
     :<|> Get '[HTML] Html
 
 navLink :: AttributeValue -> Html -> Html
-navLink link text = H.a ! A.href link ! A.class_ "rounded-xl bg-jet-100 text-chili_red-500 hover:text-jet-200 ml-4" $ text
+navLink link text = H.a ! A.href link ! A.class_ "rounded-xl text-chili_red-500 hover:text-jet-200 ml-4" $ text
 
 htmlHead :: String -> Html
 htmlHead title = H.head $ do
@@ -125,22 +125,16 @@ htmlServer =
     :<|> serveDirectoryWebApp "static"
     :<|> pure homePage
 
--- Server implementation
--- type ServerAPI :: Type
 type ServerAPI = ServerT API Handler
 
 server :: ServerAPI
 server = htmlServer
 
--- app = serve (Proxy :: Proxy API) server
-
--- type App :: Type
 type App = Application
 
 app :: App
 app = serve (Proxy @API) server
 
--- Main function
 main :: IO ()
 main = do
   putStrLn "Starting server on port 8080..."
