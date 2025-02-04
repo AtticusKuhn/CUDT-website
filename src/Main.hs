@@ -26,7 +26,7 @@ type API =
     :<|> Get '[HTML] Html
 
 navLink :: AttributeValue -> Html -> Html
-navLink link text = H.a ! A.href link ! A.class_ "text-jet-400 rounded-xl text-chili_red-500 text-white hover:text-jet-200 ml-4" $ text
+navLink link text = H.a ! A.href link ! A.class_ "rounded-xl bg-jet-100 text-chili_red-500 hover:text-jet-200 ml-4" $ text
 
 htmlHead :: String -> Html
 htmlHead title = H.head $ do
@@ -49,8 +49,6 @@ navBar = do
       do
         H.div $ do
           H.img ! A.src "/static/defense_tech_logo_2.png" ! A.class_ "h-12 w-auto"
-          -- H.a ! A.href "/" ! A.class_ "text-white font-semibold text-xl" $
-          -- "CUDTS"
           navLinks
 
 -- Common page template
@@ -62,6 +60,7 @@ pageTemplate title content =
       H.div ! A.class_ "container mx-auto p-8" $ do
         navBar
         content
+
 homePage :: Html
 homePage = pageTemplate "Home" $ do
   H.h1 ! A.class_ "text-3xl font-bold text-jet-800 mb-4" $ "Cambridge University Defence Tech Society"
