@@ -32,7 +32,7 @@ htmlHead :: String -> Html
 htmlHead title = H.head $ do
   H.meta ! A.charset "UTF-8"
   H.title $ H.toHtml title
-  H.link ! A.rel "stylesheet" ! A.href "/static/styles.css/"
+  H.link ! A.rel "stylesheet" ! A.href "/static/styles.css"
   H.link ! A.rel "icon" ! A.type_ "image/png" ! A.href "/static/defense_tech_logo_2.png"
 
 navLinks :: Html
@@ -45,7 +45,7 @@ navLinks = do
 navBar :: Html
 navBar = do
   H.nav $
-    H.div ! A.class_ "container mx-auto flex justify-between items-center" $
+    H.div ! A.class_ "w-screen bg-penn_red-100 container mx-auto flex justify-between items-center" $
       do
         H.div ! A.class_ "flex items-center" $ do
           H.a ! A.href "/" $ H.img ! A.src "/static/defense_tech_logo_2_transparent.png" ! A.class_ "h-12 w-auto"
@@ -56,13 +56,13 @@ pageTemplate :: String -> Html -> Html
 pageTemplate title content =
   H.docTypeHtml $ do
     htmlHead title
-    H.body ! A.class_ "bg-jet-50 h-screen" $
-      H.div ! A.class_ "container mx-auto p-8" $ do
+    H.body ! A.class_ "bg-night-800 w-screen h-screen" $
+      H.div ! A.class_ "w-screen container py-8" $ do
         navBar
         content
 
 heading :: Html -> Html
-heading text = H.h1 ! A.class_ "text-3xl font-bold text-jet-800 mb-4" $ text
+heading text = H.h1 ! A.class_ "py-6 text-3xl font-bold text-jet-800 mb-4" $ text
 
 para :: Html -> Html
 para text = H.p ! A.class_ "text-jet-700 mb-4" $ text
