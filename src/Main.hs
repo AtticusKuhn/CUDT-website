@@ -48,7 +48,7 @@ navBar = do
     H.div ! A.class_ "container mx-auto flex justify-between items-center" $
       do
         H.div $ do
-          H.img ! A.src "/static/defense_tech_logo_2.png"
+          H.img ! A.src "/static/defense_tech_logo_2.png" ! A.class_ "h-12 w-auto"
           -- H.a ! A.href "/" ! A.class_ "text-white font-semibold text-xl" $
           -- "CUDTS"
           navLinks
