@@ -56,7 +56,7 @@ pageTemplate :: String -> Html -> Html
 pageTemplate title content =
   H.docTypeHtml $ do
     htmlHead title
-    H.body ! A.class_ "bg-night-800 w-screen h-screen" $
+    H.body ! A.class_ "bg-night w-screen h-screen" $
       H.div ! A.class_ "w-screen container py-8" $ do
         navBar
         content
