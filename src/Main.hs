@@ -47,7 +47,7 @@ navBar = do
   H.nav $
     H.div ! A.class_ "w-screen bg-penn_red-100 container mx-auto flex justify-between items-center" $
       do
-        H.div ! A.class_ "flex items-center" $ do
+        H.div ! A.class_ "w-full flex items-center" $ do
           H.a ! A.href "/" $ H.img ! A.src "/static/defense_tech_logo_2_transparent.png" ! A.class_ "h-12 w-auto"
           navLinks
 
