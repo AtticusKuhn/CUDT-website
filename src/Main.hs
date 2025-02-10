@@ -32,7 +32,7 @@ htmlHead :: String -> Html
 htmlHead title = H.head $ do
   H.meta ! A.charset "UTF-8"
   H.title $ H.toHtml title
-  H.link ! A.rel "stylesheet" ! A.href "/static/styles.css"
+  H.link ! A.rel "stylesheet" ! A.href "/static/styles2.css"
   H.link ! A.rel "icon" ! A.type_ "image/png" ! A.href "/static/defense_tech_logo_2.png"
 
 navLinks :: Html
